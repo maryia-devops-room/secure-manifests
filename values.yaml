@@ -1,0 +1,9 @@
+app:
+  image: ghcr.io/maryiadevopsroom/secure-ci:main
+  port: 5000
+  mongoUri: mongodb://mongo:27017/
+
+mongo:
+  image: mongo:8.0
+  port: 27017
+  pvcSize: 1Gi
