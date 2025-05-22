@@ -1,5 +1,0 @@
-apiVersion: v2
-name: GetShorty
-description: A Helm chart for app + mongo
-version: 0.1.0
-appVersion: "prod"
