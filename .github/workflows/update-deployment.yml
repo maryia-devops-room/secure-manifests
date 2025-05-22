@@ -28,7 +28,7 @@ jobs:
 
       - name: Update deployment image
         run: |
-          yq e '.spec.template.spec.containers[0].image = "${{ github.event.client_payload.image }}@${{ github.event.client_payload.digest }}"' -i path/to/deployment.yaml
+          yq e '.spec.template.spec.containers[0].image = "${{ github.event.client_payload.image }}@${{ github.event.client_payload.digest }}"' -i ./app-deploy.yml
 
       - name: Commit and push changes
         run: |
