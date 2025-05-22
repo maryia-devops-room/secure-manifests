@@ -2,6 +2,10 @@ on:
   repository_dispatch:
     types: [update-deployment]
 
+permissions:
+  contents: write
+
+
 jobs:
   verify-and-update:
     runs-on: ubuntu-latest
@@ -34,7 +38,9 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git commit -am "Update image to ${{ github.event.client_payload.tag }}"
-          git push
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git commit -am "Update image to ${{ github.event.client_payload.image }}@${{ github.event.client_payload.digest }}" || echo "No changes to commit"
+          git push origin HEAD:main
+
