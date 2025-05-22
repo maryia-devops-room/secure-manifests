@@ -1,0 +1,38 @@
+on:
+  repository_dispatch:
+    types: [update-deployment]
+
+jobs:
+  verify-and-update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout manifests repo
+        uses: actions/checkout@v4
+
+      - name: Install yq
+        run: |
+          sudo apt-get update && sudo apt-get install -y yq
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@59acb6260d9c0ba8f4a2f9d9b48431a222b68e20 #v3.5.0
+        with:
+          cosign-release: 'v2.2.4'
+
+      - name: Verify Signature
+        run: |
+          cosign verify \
+            ${{ github.event.client_payload.image }}:${{ github.event.client_payload.tag }} \
+            --certificate-identity "https://github.com/maryia-devops-room/secure-cicd/.github/workflows/docker-build.yml@refs/heads/main" \
+            --certificate-oidc-issuer "https://token.actions.githubusercontent.com"
+
+      - name: Update deployment image
+        run: |
+          yq e '.spec.template.spec.containers[0].image = "${{ github.event.client_payload.image }}:${{ github.event.client_payload.tag }}"' -i path/to/deployment.yaml
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git commit -am "Update image to ${{ github.event.client_payload.tag }}"
+          git push
