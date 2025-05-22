@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: ghcr.io/maryiadevopsroom/secure-cicd:dev
+          image: ghcr.io/maryia-devops-room/secure-ci:main
           ports:
             - containerPort: 5000
           env:
