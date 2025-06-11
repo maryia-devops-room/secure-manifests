@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: ghcr.io/maryia-devops-room/secure-ci@sha256:2ecbda7f492d62a80d2d1273e04023d823bad17bb579d64bf0f8a685309385de
+          image: ghcr.io/maryia-devops-room/secure-ci@sha256:f19a443c5af6b159d1779e1e36f8cd0ecd89743dbe68cb55e77e6e001bc4ff7f
           ports:
             - containerPort: 5000
           env:
