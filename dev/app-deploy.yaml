@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/maryia-devops-room/secure-ci@sha256:f19a443c5af6b159d1779e1e36f8cd0ecd89743dbe68cb55e77e6e001bc4ff7f
+          ports:
+            - containerPort: 5000
+          env:
+            - name: MONGO_URI
+              value: mongodb://mongo:27017/
+            - name: TEST
+              value: dev
